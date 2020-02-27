@@ -1,0 +1,16 @@
+<!-- -->
+<launch>
+	<arg name="openni_nodelet_manager_name" default="/camera/camera_nodelet_manager" />
+
+	<!-- node pkg="nodelet" type="nodelet" name="$(arg openni_nodelet_manager_name)" args="manager" respawn="false" / -->
+	<node pkg="nodelet" type="nodelet" name="kinect_gound_filter" args="load pcl/PassThrough $(arg openni_nodelet_manager_name)" respawn="false">
+		<rosparam>filter_field_name: z
+filter_limit_min: 0.2
+filter_limit_max: 0.4
+filter_limit_negative: false
+keep_organized: true
+input_frame: base_link</rosparam>
+		<remap from="~input" to="/camera/depth/points"/>
+		<remap from="~output" to="/camera/depth/points_ground_filtered"/>
+	</node>
+</launch>
